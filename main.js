@@ -2,7 +2,7 @@
 
     function DOMLoaded()
     {
-        document.querySelector('div').innerText = 'DOM Loaded'
+        document.querySelector('#date-time').innerText = Date.now().toString()
     }
 
     document.addEventListener('DOMContentLoaded', DOMLoaded)
