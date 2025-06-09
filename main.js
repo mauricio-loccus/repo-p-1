@@ -2,7 +2,7 @@
 
     function DOMLoaded()
     {
-        document.querySelector('#date-time').innerText = Date.now().toString()
+        document.querySelector('#date-time').innerText = (new Date()).toLocaleTimeString()
     }
 
     document.addEventListener('DOMContentLoaded', DOMLoaded)
