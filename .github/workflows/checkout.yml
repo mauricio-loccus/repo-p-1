@@ -1,0 +1,46 @@
+name: Deploy GitHub Pages Specific Commit                                 # Permite disparar o workflow manualmente e passar o SHA do commit                   
+
+on:
+  workflow_dispatch:
+    inputs:
+      commit_sha:
+        description: 'SHA do commit a ser deployado para o GitHub Pages'
+        required: true
+        type: string
+        default: 9769                                                     # Use para pegar o SHA do commit atual na branch
+
+permissions:
+  contents: write
+  pages: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment-pages.outputs.page_url }}
+
+    steps:
+      - name: Checkout specific commit
+        uses: actions/checkout@v4                                         # Clona o repositório na branch de origem para garantir o histórico
+        with:
+          ref: gh_pages
+          fetch-depth: 0                                                  # Fetch depth 0 é crucial para que 'git reset' veja o histórico completo
+
+      - name: Reset to specific commit
+        run: git reset --hard ${{ github.event.inputs.commit_sha }}       # Isso faz com que o diretório de trabalho do runner esteja no estado do commit_sha
+        
+      - name: Verify current commit                                       # Opcional: Verifique se o commit está correto
+        run: git log -1 --pretty=format:"%H %s"
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: '.'
+
+      - name: Deploy to GitHub Pages
+        id: deployment-pages
+        uses: actions/deploy-pages@v4
