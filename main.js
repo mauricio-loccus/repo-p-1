@@ -3,6 +3,7 @@
     async function DOMLoaded()
     {
         document.querySelector('#update').addEventListener('click', () => updateView())
+        updateView()
     }
     }
     }
