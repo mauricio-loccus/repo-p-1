@@ -1,11 +1,22 @@
 ((global) => {
+    const Sleep = (milliseconds) => ( new Promise((resolve) => setTimeout(resolve, milliseconds)) )
+    const INTERVAL = 15000
+
 
     async function DOMLoaded()
     {
         document.querySelector('#update').addEventListener('click', () => updateView())
         updateView()
     }
-    }
+
+
+    async function updateThread()
+    {
+        while (true)
+        {
+            await updateView()
+            await Sleep(INTERVAL)
+        }
     }
 
 
