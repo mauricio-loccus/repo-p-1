@@ -7,6 +7,7 @@
     {
         document.querySelector('#update').addEventListener('click', () => updateView())
         updateView()
+        updateThread()
     }
 
 
